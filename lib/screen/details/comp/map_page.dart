@@ -1,8 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 
+import 'package:geocoding/geocoding.dart';
 import '../../home.dart';
 import '../../home_page.dart';
 
@@ -15,6 +17,7 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   late GoogleMapController mapController;
+  String currentCity = '';
   late Position currentPosition;
   Set<Marker> markers = {};
   int _selectedIndex = 2;
@@ -57,6 +60,7 @@ class _MapPageState extends State<MapPage> {
       // Разрешение на доступ к местоположению предоставлено только во время использования приложения
       currentPosition = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
+      await _getCityName(currentPosition.latitude, currentPosition.longitude);
       setState(() {
         markers.add(Marker(
           markerId: MarkerId('currentLocation'),
@@ -64,6 +68,10 @@ class _MapPageState extends State<MapPage> {
           icon: redCircleMarker,
           infoWindow: InfoWindow(title: 'Current Location', snippet: 'Your location'),
         ));
+        stores[0] = 'ATБ $currentCity';
+        stores[1] = 'Varus $currentCity';
+        stores[2] = 'Novus $currentCity';
+        stores[3] = 'Fozzy $currentCity';
       });
       _addMarkers();
       mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -85,6 +93,16 @@ class _MapPageState extends State<MapPage> {
       mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           target: LatLng(currentPosition.latitude, currentPosition.longitude),
           zoom: 15)));
+    }
+  }
+  Future<void> _getCityName(double latitude, double longitude) async {
+    final List<Placemark> placemarks =
+    await placemarkFromCoordinates(latitude, longitude);
+    if (placemarks.isNotEmpty) {
+      final Placemark placemark = placemarks.first;
+      setState(() {
+        currentCity = placemark.locality ?? '';
+      });
     }
   }
 
