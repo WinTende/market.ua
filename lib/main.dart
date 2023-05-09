@@ -1,8 +1,5 @@
 import 'dart:async';
-
-import 'package:firebase/screen/home.dart';
 import 'package:firebase/screen/home_page.dart';
-import 'package:firebase/screen/login.dart';
 import 'package:firebase/screen/register.dart';
 import 'package:firebase/screen/verify.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -107,7 +104,7 @@ class MyApps extends StatelessWidget {
     debugShowCheckedModeBanner: false,
     title: title,
     home: FutureBuilder(
-      future: Future.delayed(Duration(milliseconds: 600)), // здесь мы задаем время отображения SplashScreen
+      future: Future.delayed(Duration(milliseconds: 800)), // здесь мы задаем время отображения SplashScreen
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SplashScreen();
