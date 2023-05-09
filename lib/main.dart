@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase/screen/home.dart';
 import 'package:firebase/screen/home_page.dart';
 import 'package:firebase/screen/login.dart';
@@ -12,9 +14,89 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   MobileAds.instance.initialize();
-  runApp(MyApp());
+  runApp(MyApps());
 }
-class MyApp extends StatelessWidget {
+
+class LogoAnimation extends StatefulWidget {
+  @override
+  _LogoAnimationState createState() => _LogoAnimationState();
+}
+
+class _LogoAnimationState extends State<LogoAnimation>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+    _animation = Tween<double>(begin: 0, end: 200).animate(_controller)
+      ..addListener(() {
+        setState(() {});
+      });
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topCenter,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            'assets/icons/logo.png',
+            height: _animation.value,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFFFFFFF),
+              Color(0xBB42E4FF),
+            ],
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start, // выравниваем по верху
+          children: [
+            SizedBox(height: 50), // добавляем пространство между верхней частью экрана и логотипом
+            LogoAnimation(),
+            Spacer(), // добавляем пространство между логотипом и индикатором загрузки
+            CircularProgressIndicator(),
+            Spacer(), // добавляем пространство между индикатором загрузки и нижней частью экрана
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MyApps extends StatelessWidget {
   static final String title = 'Login';
 
   final navigatorKey = GlobalKey<NavigatorState>();
@@ -24,9 +106,19 @@ class MyApp extends StatelessWidget {
     navigatorKey: navigatorKey,
     debugShowCheckedModeBanner: false,
     title: title,
-    home: HomePage(),
+    home: FutureBuilder(
+      future: Future.delayed(Duration(milliseconds: 600)), // здесь мы задаем время отображения SplashScreen
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SplashScreen();
+        } else {
+          return HomePage();
+        }
+      },
+    ),
   );
 }
+
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(

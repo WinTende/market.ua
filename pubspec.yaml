@@ -37,6 +37,8 @@ dependencies:
   geocode: ^1.0.2
   geocoding: ^2.1.0
   flutter_launcher_icons: ^0.13.1
+  flare_flutter: ^3.0.2
+  flutter_native_splash: ^2.2.19
 
 dev_dependencies:
   flutter_test:
@@ -60,5 +62,5 @@ flutter:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/marketua (2).png"
+  image_path: "assets/icons/avatar.png"
 
