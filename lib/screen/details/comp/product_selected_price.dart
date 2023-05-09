@@ -43,7 +43,7 @@ class _ProductPriceState extends State<ProductPrice> with SingleTickerProviderSt
     imageShop = [
       Image.asset('assets/atb.webp'),
       Image.asset('assets/novus.webp'),
-      Image.asset('assets/varus.webp'),
+      Image.asset('assets/mega.webp'),
       Image.asset('assets/fozzy.webp')
     ];
     images = widget.selectedShop == 0
@@ -57,12 +57,12 @@ class _ProductPriceState extends State<ProductPrice> with SingleTickerProviderSt
 
 
   Future<void> fetchPrices() async {
-    final uri = widget.selectedShop == 0 ? widget.productmix.uriVarus :
+    final uri = widget.selectedShop == 0 ? widget.productmix.uriMega :
     widget.selectedShop == 1 ? widget.productmix.uriNovus :
     widget.selectedShop == 2 ? widget.productmix.uriFozzy :
     widget.productmix.uriATB;
 
-    final uri2 = widget.selectedShop == 0 ? widget.productmix.uriVarus2 :
+    final uri2 = widget.selectedShop == 0 ? widget.productmix.uriMega2 :
     widget.selectedShop == 1 ? widget.productmix.uriNovus2 :
     widget.selectedShop == 2 ? widget.productmix.uriFozzy2 :
     widget.productmix.uriATB2;
@@ -173,7 +173,7 @@ class _ProductPriceState extends State<ProductPrice> with SingleTickerProviderSt
                                   String url = '';
                                   switch (widget.selectedShop) {
                                     case 0:
-                                      url = index == 0 ? widget.productmix.uriVarus : widget.productmix.uriVarus2;
+                                      url = index == 0 ? widget.productmix.uriMega : widget.productmix.uriMega2;
                                       break;
                                     case 1:
                                       url = index == 0 ? widget.productmix.uriNovus : widget.productmix.uriNovus2;

@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 // 2 - Snacks
 
 class Product {
-  final String image, title, description ,uriVarus , uriNovus , uriATB , uriFozzy;
+  final String image, title, description ,uriMega , uriNovus , uriATB , uriFozzy;
   final int id, category;
   final Color color;
 
@@ -21,7 +21,7 @@ class Product {
     required this.image,
     required this.uriATB,
     required this.uriNovus,
-    required this.uriVarus,
+    required this.uriMega,
     required this.uriFozzy,
   });
 
@@ -49,7 +49,7 @@ List<Product> products = [
     color: Color(0xFFE21F6F),
     uriATB: 'https://www.atbmarket.com/product/napij-1l-pit-bull-energeticnij?search=pit',
     uriNovus: 'https://novus.online/product/napij-bezalkogolnij-energeticnij-silnogazovanij-pit-bul-pet-1l',
-    uriVarus: 'https://varus.ua/napiy-energetichniy-pit-bul-1l',
+    uriMega: 'https://megamarket.ua/products/napij-pit-bull-energetichnij-1l-h12',
       uriFozzy: 'https://fozzyshop.ua/ru/bezalkogolnye/3091-napitok-energeticheskij-pit-bull-4820097892786.html'
   ),
   Product(
@@ -62,7 +62,7 @@ List<Product> products = [
     color: Color(0xFF33518E),
     uriATB: 'https://www.atbmarket.com/product/napij-355-ml-red-bull-energeticnij-zb',
     uriNovus: 'https://novus.online/product/napij-energeticnij-red-bull-0355l',
-    uriVarus: 'https://varus.ua/napiy-energetichniy-red-bull-0-355l-zh-b',
+    uriMega: 'https://megamarket.ua/products/napij-red-bull-energetichnij-355ml-h24',
     uriFozzy : 'https://fozzyshop.ua/ru/bezalkogolnye/42604-napitok-energeticheskij-redbull-vkus-tropich-fruk-zhb-9002490231521.html',
   ),
   Product(
@@ -76,7 +76,7 @@ List<Product> products = [
     'Чіпси Lays виготовлені з картоплі преміум-класу та мають унікальний солонуватий та хрусткий смак, який подобається всім.',
     uriATB: 'https://www.atbmarket.com/product/cipsi120-g-lays-kartoplani-zi-smakom-smetani-ta-zeleni-mup?search=lays',
     uriNovus: 'https://novus.online/product/chipsy-kartoplyani-smak-smetany-i-zeleni-lays-120h',
-    uriVarus: 'https://varus.ua/chipsi-lay-s-strong-chili-ta-laym-120-g',
+    uriMega: 'https://megamarket.ua/products/chipsi-lays-barbekyu-135g',
     uriFozzy : 'https://fozzyshop.ua/ru/chipsy/54076-chipsy-lays-maxx-kartofelnye-so-vkusom-bezumnoj-salsy-120g-5900259095336.html',
   ),
   Product(
@@ -89,7 +89,7 @@ List<Product> products = [
     image: 'assets/banan.webp',
     uriATB: 'https://www.atbmarket.com/product/banan-1-gat',
     uriNovus: 'https://novus.online/product/banan-vag',
-    uriVarus: 'https://varus.ua/banan-vag',
+    uriMega: 'https://megamarket.ua/products/banani-ekvador-vagovi',
     uriFozzy : 'https://fozzyshop.ua/ru/frukty-i-yagody/11745-banan-2732485.html',
   ),
   Product(
@@ -102,7 +102,7 @@ List<Product> products = [
     color: Color(0xFF2B82CC),
     uriATB: 'https://www.atbmarket.com/product/voda-15l-morsinska-mineralna-silnogazovana?search=%D0%BC%D0%BE%D1%80%D1%88',
     uriNovus: 'https://novus.online/product/voda-gazovana-morsinska-15l',
-    uriVarus: 'https://varus.ua/voda-negazovana-morshinska-1-5l-ukraina',
+    uriMega: 'https://megamarket.ua/products/voda-mineralna-morshinska-ng-15l-h6',
     uriFozzy : 'https://fozzyshop.ua/ru/voda-mineralnaya-negazirovannaya/12796-voda-mineralnaya-morshinska-n-gaz-4820017000024.html',
   ),
   Product(
@@ -115,7 +115,7 @@ List<Product> products = [
     color: Color(0xFFD0781C),
     uriATB: 'https://www.atbmarket.com/product/napij-07l-captain-morgan-original-spiced-gold-alkogolnij-na-osnovi-romu-35?search=captain%20morgan',
     uriNovus: 'https://novus.online/product/rom-capitan-morgan-spiced-gold-35-07l',
-    uriVarus: 'https://varus.ua/rom-oridzhinal-spaysed-gold-kepten-morgan-0-7l-35-yamayka',
+    uriMega: 'https://megamarket.ua/products/rom-captain-morgan-original-spiced-gold-35-07l',
     uriFozzy : 'https://fozzyshop.ua/ru/rom/2655-rom-captain-morgan-spiced-gold-5000299223017.html',
   ),
   Product(
@@ -127,7 +127,7 @@ List<Product> products = [
       image: 'assets/moloko.webp',
       uriATB: 'https://www.atbmarket.com/product/moloko-09-kg-agotinske-ultrapasterizovane-26',
       uriNovus: 'https://novus.online/product/moloko-26-agotin-pl-900g',
-      uriVarus: 'https://varus.ua/moloko-ultrapasterizovane-2-6-900g-tf',
+      uriMega: 'https://megamarket.ua/products/moloko-yagotinske-26-ultrapasterizovane-tetra-fino-900g',
       uriFozzy: 'https://fozzyshop.ua/ru/moloko/86228-moloko-ultrapasterizovannoe-yagotinske-26-4823005208259.html',
   ),
   Product(
@@ -139,7 +139,7 @@ List<Product> products = [
     image: 'assets/cola.webp',
     uriATB: 'https://www.atbmarket.com/product/napij-15-l-coca-cola-bezalkogolnij-silnogazovanij?search=coca',
     uriNovus: 'https://novus.online/product/napij-gazovanij-coca-cola-15l',
-    uriVarus: 'https://varus.ua/napiy-coca-cola-silnogazovaniy-1-5-l',
+    uriMega: 'https://megamarket.ua/products/voda-coca-cola-15l-h24',
     uriFozzy: 'https://fozzyshop.ua/ru/voda-sladkaya-gazirovannaya/12883-napitok-coca-cola-15l-5449000000439.html',
   ),
   Product(
@@ -151,7 +151,7 @@ List<Product> products = [
     image: 'assets/may.webp',
     uriATB: 'https://www.atbmarket.com/product/majonez-300-g-korolivskij-smak-korolivskij-67?search=%D0%BC%D0%B0%D0%B9%D0%BE%D0%BD',
     uriNovus: 'https://novus.online/product/majoneznyj-sous-korolevskij-vkus-korolevskij-67-300g',
-    uriVarus: 'https://varus.ua/majonez-korolivskij-smak-premium-67-300-g',
+    uriMega: 'https://varus.ua/majonez-korolivskij-smak-premium-67-300-g',
     uriFozzy: 'https://fozzyshop.ua/ru/majonez/94730-majonez-korolivskij-smak-korolevskij-67-d-p-4820175669699.html',
   ),
   Product(
@@ -163,7 +163,7 @@ List<Product> products = [
     image: 'assets/stakan.webp',
     uriATB: 'https://www.atbmarket.com/product/morozivo-100g-lasunka-stakan-velikan-z-pidvarkami-abrikosova-ta-visneva?search=%D0%BC%D0%BE%D1%80%D0%BE%D0%B6%D0%B5%D0%BD%D0%BE%D0%B5',
     uriNovus: 'https://novus.online/product/morozivo-stakan-velikan-plombir-u-vafelnomu-stakani-lasunka-85g',
-    uriVarus: 'https://varus.ua/morozivo-lasunka-velikan-z-kuragoyu-chornoslivom-ta-arakhisom-100g',
+    uriMega: 'https://varus.ua/morozivo-lasunka-velikan-z-kuragoyu-chornoslivom-ta-arakhisom-100g',
     uriFozzy: 'https://fozzyshop.ua/ru/morozhenoe/93830-morozhenoe-lasunka-malyuk-am-plombir-vafelnyj-stakan-4820193554335.html',
   ),
   Product(
@@ -175,7 +175,7 @@ List<Product> products = [
     image: 'assets/yami.webp',
     uriATB: 'https://www.atbmarket.com/product/cukerki-70-g-rosen-yummi-gummi-sour-belts-zelejni?search=%D0%B6%D0%B5%D0%BB%D0%B5%D0%B9',
     uriNovus: 'https://novus.online/product/tsukerky-roshen-yummi-gummi-twists-zheleyni-70h',
-    uriVarus: 'https://varus.ua/cukerki-roshen-yummi-gummi-donuts-zhelejni-70-g',
+    uriMega: 'https://megamarket.ua/products/tsukerki-roshen-zhelejni-yummi-gummi-duo-mix-70g',
     uriFozzy: 'https://fozzyshop.ua/ru/konfety-ledency-marmelad/97881-konfety-roshen-yummi-gummi-twists-0250014834164.html',
   ),
   Product(
@@ -187,7 +187,7 @@ List<Product> products = [
     image: 'assets/avacado.webp',
     uriATB: 'https://www.atbmarket.com/product/avokado-vagove-1-gat',
     uriNovus: 'https://novus.online/product/avokado-khaas-dribnyy-sht',
-    uriVarus: 'https://varus.ua/avokado-vag',
+    uriMega: 'https://varus.ua/avokado-vag',
     uriFozzy: 'https://fozzyshop.ua/ru/frukty-i-yagody/11727-avokado-0250000398144.html',
   ),
   Product(
@@ -199,7 +199,7 @@ List<Product> products = [
     image: 'assets/kava.webp',
     uriATB: 'https://www.atbmarket.com/product/kava-95g-jacobs-monarch-rozcinna-sublimovana?search=jacobs%20monarch',
     uriNovus: 'https://novus.online/product/kava-rozchynna-yakobz-monarkh-6100h',
-    uriVarus: 'https://varus.ua/kava-naturalna-rozchinna-sublimovana-jacobs-monarch-95-g',
+    uriMega: 'https://megamarket.ua/products/kava-rozchinna-jacobs-monarch-100-g-8711000513859',
     uriFozzy: 'https://fozzyshop.ua/ru/kofe-rastvorimyj/31329-kofe-rastvorimyj-jacobs-monarch-naturalnyj-sublimirovannyj-s-b-7622210324078.html',
   ),
   Product(
@@ -211,7 +211,7 @@ List<Product> products = [
     image: 'assets/pivo.webp',
     uriATB: 'https://www.atbmarket.com/product/pivo-05-l-obolon-svitle?search=%D0%BF%D0%B8%D0%B2%D0%BE%20%D0%BE%D0%B1%D0%BE%D0%BB%D0%BE%D0%BD%D1%8C',
     uriNovus: 'https://novus.online/product/pivo-svitle-obolon-45-05l-sklpl',
-    uriVarus: 'https://varus.ua/pivo-0-5l-svitle-obolon-sb',
+    uriMega: 'https://varus.ua/pivo-0-5l-svitle-obolon-sb',
     uriFozzy: 'https://fozzyshop.ua/ru/pivo-svetloe/2919-pivo-obolon-svitle-svetloe-4820000191708.html',
   ),
 ];

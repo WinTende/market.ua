@@ -150,8 +150,8 @@ class _MixPageState extends State<MixPage> with TickerProviderStateMixin {
                           child: ListView(
                               children: [
                                 _buildStoreTile(
-                                  'Varus',
-                                  'assets/varus.webp',
+                                  'MegaMarket',
+                                  'assets/mega.webp',
                                   onTap: () {
                                     selectedShop = 0;
                                     Navigator.of(context).push(
