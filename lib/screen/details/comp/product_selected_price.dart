@@ -107,7 +107,7 @@ class _ProductPriceState extends State<ProductPrice> with SingleTickerProviderSt
   String getPriceSelector() {
     switch (widget.selectedShop) {
       case 0:
-        return '.sf-price__regular, .sf-price__special';
+        return '.price';
       case 1:
         return '.product-card__price-current';
       case 2:

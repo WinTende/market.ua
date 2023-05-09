@@ -17,14 +17,39 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // Анимация прокрутки выбранной категории к центру
+      _scrollController.animateTo(
+        (widget.selectedIndex * 60).toDouble(), // 90 - ширина одной категории
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
+
     return SizedBox(
-      height: 25,
-      child: ListView.builder(
+        height: 25,
+        child: ListView.builder(
+        controller: _scrollController, // Добавлено
         scrollDirection: Axis.horizontal,
         itemCount: widget.categories.length,
-        itemBuilder: (context, index) => GestureDetector(
+        itemBuilder: (context, index)  => GestureDetector(
           onTap: () => widget.onTap(index),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
