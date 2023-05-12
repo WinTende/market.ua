@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import '../../../model/products.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 class Body extends StatefulWidget {
@@ -38,15 +39,16 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     fetchPrices();
-    _controller = AnimationController(
-      duration: Duration(milliseconds: 1000),
-      vsync: this,
-    )..repeat(reverse: false);
     _minPrice = sortPrices(pricesShop).first;
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1000),
+    );
     _animation = CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOut,
     );
+    _controller.forward();
   }
 
   Future<void> fetchPrices() async {
@@ -102,13 +104,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
       setState(() {
         updatePrice(price);
         print('$shopName - $price');
-        final sortedPrices = sortPrices(pricesShop);
-        _animation = Tween<double>(
-          begin: sortedPrices[0],
-          end: double.parse(price ?? '0'),
-        ).animate(_controller);
-        _controller.reset();
-        _controller.forward();
       });
     } catch (e) {
       print(e.toString());
@@ -140,11 +135,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     List<double> sortedPrices = sortPrices(pricesShop);
     _minPrice = sortPrices(pricesShop).first;
     Size size = MediaQuery.of(context).size;
-    if (isLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
     String description = widget.product.description;
 
     // Определяем первые 10 слов описания
@@ -159,184 +149,211 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     // Переключатель для полного/сокращенного описания
     bool isFullDescription = false;
 
-    return SingleChildScrollView(
-        child: AbsorbPointer(
-        absorbing: isLoading,
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 1000),
+      child: isLoading
+          ? Center(
         child: Stack(
-          children: <Widget>[
-        Positioned(
-        top: -83,
-          right: 10,
-          child: Image.asset(
-            'assets/loz.webp',
-            width: 220,
-            height: 220,
-            // Добавьте дополнительные свойства для позиционирования и размера изображения по вашему усмотрению.
-          ),
+          alignment: Alignment.center,
+          children: [
+            SpinKitFadingCube(
+              color: Colors.white,
+              size: 40.0,
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(bottom: 300),
+              child: ScaleTransition(
+              scale: _animation,
+              child: Image.asset(
+                'assets/icons/logo.png',
+                height: 200,
+              ),
+            ),
+            ),
+          ],
         ),
-        StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
-      return Column(
-        children: <Widget>[
-          SizedBox(
-            height: size.height,
-            child: Stack(
+      )
+          : SingleChildScrollView(
+        child: AbsorbPointer(
+          absorbing: isLoading,
+          child: Stack(
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: size.height * 0.41),
-                  height: 700,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
+                Positioned(
+                  top: -70,
+                  right: 10,
+                  child: Image.asset(
+                    'assets/loz.webp',
+                    width: 200,
+                    height: 200,
+                    // Добавьте дополнительные свойства для позиционирования и размера изображения по вашему усмотрению.
                   ),
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 20),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isFullDescription = !isFullDescription;
-                            });
-                          },
-                          child: Text(
-                            isFullDescription
-                                ? widget.product.description
-                                : shortDescription,
-                            style: TextStyle(fontSize: 22.0),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: pricesShop.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 20, horizontal: 20),
-                              child: InkWell(
-                                onTap: () {
-                                  String url = "http://example.com";
-                                  ;
-                                  if (index == 0) {
-                                    url = widget.product.uriATB;
-                                  } else if (index == 1) {
-                                    url = widget.product.uriNovus;
-                                  } else if (index == 2) {
-                                    url = widget.product.uriMega;
-                                  }
-                                  if (url != null) {
-                                    launch(url);
-                                  }
-                                },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        imageATB[index],
-                                        SizedBox(width: 10),
-                                        // добавляем небольшой отступ между картинкой и текстом
-                                        Expanded(
-                                          child: Text(
-                                            ' ${shop[index]}',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        Text(
-                                          '${pricesShop[index]} UAH',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ],
+                ),
+                StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                      return Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: size.height,
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.only(top: size.height * 0.41),
+                                  height: 700,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(24),
+                                      topRight: Radius.circular(24),
                                     ),
                                   ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          TyperAnimatedTextKit(
-                            isRepeatingAnimation: false,
-                            text: ['Товар'],
-                            textStyle: TextStyle(
-                              color: Colors.white,
-                            ),
-                            speed: Duration(milliseconds: 400),
-                            pause: Duration(milliseconds: 1000),
-                            displayFullTextOnTap: true,
-                            repeatForever: false,
-                          ),
-                          TyperAnimatedTextKit(
-                            isRepeatingAnimation: false,
-                            text: [widget.product.title],
-                            textStyle: TextStyle(
-                                fontSize: 24.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                            speed: Duration(milliseconds: 300),
-                            pause: Duration(milliseconds: 1000),
-                            displayFullTextOnTap: true,
-                            repeatForever: false,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              AnimatedBuilder(
-                                animation: _animation,
-                                builder: (BuildContext context, Widget? child) {
-                                  String price =
-                                      'Ціна \n${_minPrice.toStringAsFixed(2)} UAH';
-                                  return Text(
-                                    price,
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  );
-                                },
-                              ),
-                              SizedBox(
-                                width: 60,
-                              ),
-                              Expanded(
-                                  child: FadeTransition(
-                                opacity: _animation,
-                                child: Image.asset(
-                                  widget.product.image,
-                                  fit: BoxFit.fill,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20, horizontal: 20),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isFullDescription = !isFullDescription;
+                                            });
+                                          },
+                                          child: Text(
+                                            isFullDescription
+                                                ? widget.product.description
+                                                : shortDescription,
+                                            style: TextStyle(fontSize: 22.0),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 20),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          itemCount: pricesShop.length,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                  vertical: 20, horizontal: 20),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  String url = "http://example.com";
+                                                  ;
+                                                  if (index == 0) {
+                                                    url = widget.product.uriATB;
+                                                  } else if (index == 1) {
+                                                    url = widget.product.uriNovus;
+                                                  } else if (index == 2) {
+                                                    url = widget.product.uriMega;
+                                                  }
+                                                  if (url != null) {
+                                                    launch(url);
+                                                  }
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    imageATB[index],
+                                                    SizedBox(width: 10),
+                                                    // добавляем небольшой отступ между картинкой и текстом
+                                                    Expanded(
+                                                      child: Text(
+                                                        ' ${shop[index]}',
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '${pricesShop[index]} UAH',
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              )),
-                            ],
-                          ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      TyperAnimatedTextKit(
+                                        isRepeatingAnimation: false,
+                                        text: ['Товар'],
+                                        textStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        speed: Duration(milliseconds: 400),
+                                        pause: Duration(milliseconds: 1000),
+                                        displayFullTextOnTap: true,
+                                        repeatForever: false,
+                                      ),
+                                      TyperAnimatedTextKit(
+                                        isRepeatingAnimation: false,
+                                        text: [widget.product.title],
+                                        textStyle: TextStyle(
+                                            fontSize: 24.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                        speed: Duration(milliseconds: 300),
+                                        pause: Duration(milliseconds: 1000),
+                                        displayFullTextOnTap: true,
+                                        repeatForever: false,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          AnimatedBuilder(
+                                            animation: _animation,
+                                            builder: (BuildContext context, Widget? child) {
+                                              String price =
+                                                  'Ціна \n${_minPrice.toStringAsFixed(2)} UAH';
+                                              return Text(
+                                                price,
+                                                style: TextStyle(
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          SizedBox(
+                                            width: 60,
+                                          ),
+                                          Expanded(
+                                              child: FadeTransition(
+                                                opacity: _animation,
+                                                child: Image.asset(
+                                                  widget.product.image,
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
                         ],
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          );
-        })],
-      ),
-    ));
+                      );
+                    })],
+            ),
+          ),
+        ),
+      );
   }
 }

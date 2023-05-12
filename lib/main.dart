@@ -5,13 +5,14 @@ import 'package:firebase/screen/verify.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-Future main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   MobileAds.instance.initialize();
-  runApp(MyApps());
+  runApp(MyApp());
 }
 
 class LogoAnimation extends StatefulWidget {
@@ -29,12 +30,12 @@ class _LogoAnimationState extends State<LogoAnimation>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 1000),
     );
-    _animation = Tween<double>(begin: 0, end: 200).animate(_controller)
-      ..addListener(() {
-        setState(() {});
-      });
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
     _controller.forward();
   }
 
@@ -48,20 +49,16 @@ class _LogoAnimationState extends State<LogoAnimation>
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topCenter,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset(
-            'assets/icons/logo.png',
-            height: _animation.value,
-          ),
-        ],
+      child: ScaleTransition(
+        scale: _animation,
+        child: Image.asset(
+          'assets/icons/logo.png',
+          height: 200,
+        ),
       ),
     );
   }
 }
-
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -73,19 +70,20 @@ class SplashScreen extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFFFFFFF),
-              Color(0xBB42E4FF),
+              Color(0xFF3366FF),
+              Color(0xFF00CCFF),
             ],
           ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start, // выравниваем по верху
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 50), // добавляем пространство между верхней частью экрана и логотипом
             LogoAnimation(),
-            Spacer(), // добавляем пространство между логотипом и индикатором загрузки
-            CircularProgressIndicator(),
-            Spacer(), // добавляем пространство между индикатором загрузки и нижней частью экрана
+            SizedBox(height: 50),
+            SpinKitFadingCube(
+              color: Colors.white,
+              size: 40,
+            ),
           ],
         ),
       ),
@@ -93,28 +91,32 @@ class SplashScreen extends StatelessWidget {
   }
 }
 
-class MyApps extends StatelessWidget {
-  static final String title = 'Login';
+class MyApp extends StatelessWidget {
+  static final String title = 'My App';
 
   final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-    navigatorKey: navigatorKey,
-    debugShowCheckedModeBanner: false,
-    title: title,
-    home: FutureBuilder(
-      future: Future.delayed(Duration(milliseconds: 800)), // здесь мы задаем время отображения SplashScreen
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return SplashScreen();
-        } else {
-          return HomePage();
-        }
-      },
-    ),
-  );
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      title: title,
+      home: FutureBuilder(
+        future: Future.delayed(Duration(milliseconds: 2000)),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SplashScreen();
+          } else {
+            return HomePage();
+          }
+        },
+      ),
+    );
+  }
 }
+
+
 
 class MainPage extends StatelessWidget {
   @override

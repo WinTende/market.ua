@@ -151,7 +151,7 @@ List<Product> products = [
     image: 'assets/may.webp',
     uriATB: 'https://www.atbmarket.com/product/majonez-300-g-korolivskij-smak-korolivskij-67?search=%D0%BC%D0%B0%D0%B9%D0%BE%D0%BD',
     uriNovus: 'https://novus.online/product/majoneznyj-sous-korolevskij-vkus-korolevskij-67-300g',
-    uriMega: 'https://varus.ua/majonez-korolivskij-smak-premium-67-300-g',
+    uriMega: 'https://megamarket.ua/products/majonez-schedro-provansal-67-300g-h12',
     uriFozzy: 'https://fozzyshop.ua/ru/majonez/94730-majonez-korolivskij-smak-korolevskij-67-d-p-4820175669699.html',
   ),
   Product(
@@ -163,7 +163,7 @@ List<Product> products = [
     image: 'assets/stakan.webp',
     uriATB: 'https://www.atbmarket.com/product/morozivo-100g-lasunka-stakan-velikan-z-pidvarkami-abrikosova-ta-visneva?search=%D0%BC%D0%BE%D1%80%D0%BE%D0%B6%D0%B5%D0%BD%D0%BE%D0%B5',
     uriNovus: 'https://novus.online/product/morozivo-stakan-velikan-plombir-u-vafelnomu-stakani-lasunka-85g',
-    uriMega: 'https://varus.ua/morozivo-lasunka-velikan-z-kuragoyu-chornoslivom-ta-arakhisom-100g',
+    uriMega: '0',
     uriFozzy: 'https://fozzyshop.ua/ru/morozhenoe/93830-morozhenoe-lasunka-malyuk-am-plombir-vafelnyj-stakan-4820193554335.html',
   ),
   Product(
@@ -187,7 +187,7 @@ List<Product> products = [
     image: 'assets/avacado.webp',
     uriATB: 'https://www.atbmarket.com/product/avokado-vagove-1-gat',
     uriNovus: 'https://novus.online/product/avokado-khaas-dribnyy-sht',
-    uriMega: 'https://varus.ua/avokado-vag',
+    uriMega: '0',
     uriFozzy: 'https://fozzyshop.ua/ru/frukty-i-yagody/11727-avokado-0250000398144.html',
   ),
   Product(
@@ -211,7 +211,7 @@ List<Product> products = [
     image: 'assets/pivo.webp',
     uriATB: 'https://www.atbmarket.com/product/pivo-05-l-obolon-svitle?search=%D0%BF%D0%B8%D0%B2%D0%BE%20%D0%BE%D0%B1%D0%BE%D0%BB%D0%BE%D0%BD%D1%8C',
     uriNovus: 'https://novus.online/product/pivo-svitle-obolon-45-05l-sklpl',
-    uriMega: 'https://varus.ua/pivo-0-5l-svitle-obolon-sb',
+    uriMega: '0',
     uriFozzy: 'https://fozzyshop.ua/ru/pivo-svetloe/2919-pivo-obolon-svitle-svetloe-4820000191708.html',
   ),
 ];
