@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../model/products.dart';
 import 'package:html/parser.dart' as parser;
@@ -17,14 +19,10 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
-  String _priceATB = '';
-  String _priceNOVUS = '';
-  String _priceMega = '';
   bool isLoading = true;
-  String _priceFozzy = '';
   List<String> shop = ['ATБ', 'Novus', 'MegaMarket', 'Fozzy'];
   List<String> pricesShop = ["0", "0", "0", "0"];
-  List<Image> imageATB = [
+  List<Image> images = [
     Image.asset('assets/atb.webp'),
     Image.asset('assets/novus.webp'),
     Image.asset('assets/mega.webp'),
@@ -33,13 +31,13 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   late AnimationController _controller;
   late Animation<double> _animation;
-  double _minPrice = 0;
+  double minPrice = 0;
+  late FirebaseFirestore firestore;
 
   @override
   void initState() {
     super.initState();
     fetchPrices();
-    _minPrice = sortPrices(pricesShop).first;
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1000),
@@ -49,44 +47,48 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
     _controller.forward();
+    firestore = FirebaseFirestore.instance;
+
   }
 
   Future<void> fetchPrices() async {
     setState(() {
       isLoading = true;
     });
-    await fetchPrice('ATB', widget.product.uriATB, (price) {
-      _priceATB = price!;
-      pricesShop[0] = price;
-    });
-    setState(() {
-      isLoading = true;
-    });
-    await fetchPrice('Novus', widget.product.uriNovus, (price) {
-      _priceNOVUS = price!;
-      pricesShop[1] = price;
-    });
-    setState(() {
-      isLoading = true;
-    });
-    await fetchPrice('Fozzy', widget.product.uriFozzy, (price) {
-      _priceFozzy = price!;
-      pricesShop[3] = price;
-    });
-    setState(() {
-      isLoading = true;
-    });
-    await fetchPrice('MegaMarket', widget.product.uriMega, (price) {
-      _priceMega = price!;
-      pricesShop[2] = price;
-    });
+    await Future.wait([
+      fetchPrice('ATB', widget.product.uriATB, 0),
+      fetchPrice('Novus', widget.product.uriNovus, 1),
+      fetchPrice('Fozzy', widget.product.uriFozzy, 3),
+      fetchPrice('MegaMarket', widget.product.uriMega, 2),
+    ]);
     setState(() {
       isLoading = false;
     });
+
+    await saveTitle(widget.product.title, widget.product.image);
+  }
+  Future<void> saveTitle(String title, String imageUrl) async {
+    final productRef = FirebaseFirestore.instance.collection('products').doc(widget.product.title);
+    final documentSnapshot = await productRef.get();
+
+    if (documentSnapshot.exists) {
+      final data = documentSnapshot.data();
+      data!['title'] = title;
+      data['imageUrl'] = imageUrl;
+      data['id'] = widget.product.id;
+      data['color'] = widget.product.color.toString(); // Add the "color" field
+      await productRef.update(data);
+    } else {
+      await productRef.set({
+        'title': title,
+        'imageUrl': imageUrl,
+        'id': widget.product.id,
+        'color': widget.product.color.toString(), // Add the "color" field
+      });
+    }
   }
 
-  Future<void> fetchPrice(
-      String shopName, String uri, void Function(String?) updatePrice) async {
+  Future<void> fetchPrice(String shopName, String uri, int index) async {
     try {
       final response = await http.get(Uri.parse(uri));
       final document = parser.parse(response.body);
@@ -100,10 +102,26 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
       if (price?.contains(',') == true) {
         price = price?.replaceAll(',', '.');
       }
-
       setState(() {
-        updatePrice(price);
+        pricesShop[index] = price!;
         print('$shopName - $price');
+      });
+
+      final productRef = FirebaseFirestore.instance.collection('products').doc(widget.product.title);
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        final snapshot = await transaction.get(productRef);
+        if (snapshot.exists) {
+          final data = snapshot.data();
+          if (data != null) {
+            final currentPrice = data[shopName];
+            if (currentPrice != price) {
+              data[shopName] = price;
+              await transaction.update(productRef, data);
+            }
+          }
+        } else {
+          await transaction.set(productRef, {shopName: price});
+        }
       });
     } catch (e) {
       print(e.toString());
@@ -133,7 +151,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     List<double> sortedPrices = sortPrices(pricesShop);
-    _minPrice = sortPrices(pricesShop).first;
+    minPrice = sortPrices(pricesShop).first;
     Size size = MediaQuery.of(context).size;
     String description = widget.product.description;
 
@@ -231,13 +249,15 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                         child: ListView.builder(
                                           itemCount: pricesShop.length,
                                           itemBuilder: (context, index) {
+                                            if (pricesShop[index] == "0") {
+                                              // Пропустить, если цена не доступна
+                                              return Container();
+                                            }
                                             return Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 20, horizontal: 20),
+                                              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                                               child: InkWell(
                                                 onTap: () {
                                                   String url = "http://example.com";
-                                                  ;
                                                   if (index == 0) {
                                                     url = widget.product.uriATB;
                                                   } else if (index == 1) {
@@ -250,12 +270,10 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                                   }
                                                 },
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    imageATB[index],
+                                                    images[index],
                                                     SizedBox(width: 10),
-                                                    // добавляем небольшой отступ между картинкой и текстом
                                                     Expanded(
                                                       child: Text(
                                                         ' ${shop[index]}',
@@ -318,7 +336,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                             animation: _animation,
                                             builder: (BuildContext context, Widget? child) {
                                               String price =
-                                                  'Ціна \n${_minPrice.toStringAsFixed(2)} UAH';
+                                                  'Ціна \n${minPrice.toStringAsFixed(2)} UAH';
                                               return Text(
                                                 price,
                                                 style: TextStyle(

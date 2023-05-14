@@ -1,4 +1,5 @@
 
+import 'package:firebase/screen/details/comp/sales_page.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -46,7 +47,7 @@ class _MapPageState extends State<MapPage> {
         ));
       } else if (index == 1){
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MixPage(),
+          builder: (context) => SalesPage(),
         ));
       }
     }

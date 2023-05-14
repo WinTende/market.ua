@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 
 import 'comp/body.dart';
 import 'details/comp/map_page.dart';
+import 'details/comp/sales_page.dart';
 import 'home.dart';
 
 
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
         selectIndex = index;
         if (selectIndex == 1) {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => MixPage()),
+            MaterialPageRoute(builder: (context) => SalesPage()),
           );
         } else if (index == 2){
         Navigator.of(context).push(MaterialPageRoute(
