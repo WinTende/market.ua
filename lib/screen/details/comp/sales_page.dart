@@ -101,7 +101,7 @@ class _SalesPageState extends State<SalesPage>
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Головна'),
-            BottomNavigationBarItem(icon: Icon(Icons.blender), label: 'Знижки'),
+            BottomNavigationBarItem(icon: Icon(Icons.percent_rounded), label: 'Знижки'),
             BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Мапа'),
           ],
           onTap: onTap,
@@ -162,8 +162,8 @@ class _SalesPageState extends State<SalesPage>
 
                       final priceDifference = highestPrice - lowestPrice;
                       final priceDifferencePercentage =
-                          (priceDifference / highestPrice).abs() * 100;
-                      return priceDifferencePercentage >= 20;
+                          (priceDifference / highestPrice) * 100;
+                      return priceDifferencePercentage >= 10;
                     }
                     return false;
                   }).toList();
@@ -175,14 +175,14 @@ class _SalesPageState extends State<SalesPage>
                   }
 
                   filteredProducts.sort((a, b) {
-                    final doublePriceA =
-                        double.tryParse(a['Novus']?.toString() ?? '') ?? 0;
-                    final doublePriceB =
-                        double.tryParse(b['Novus']?.toString() ?? '') ?? 0;
+                    final doublePriceA = double.tryParse(a['Novus']?.toString() ?? '') ?? 0;
+                    final doublePriceB = double.tryParse(b['Novus']?.toString() ?? '') ?? 0;
                     return doublePriceB.compareTo(doublePriceA);
                   });
 
+
                   return ListView.builder(
+
                       itemCount: filteredProducts.length,
                       itemBuilder: (context, index) {
                         final product = filteredProducts[index];

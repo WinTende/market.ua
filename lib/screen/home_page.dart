@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Головна'),
-          BottomNavigationBarItem(icon: Icon(Icons.blender), label: 'Мікс'),
+          BottomNavigationBarItem(icon: Icon(Icons.percent_rounded), label: 'Знижки'),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Мапа'),
         ],
         onTap: onTap,

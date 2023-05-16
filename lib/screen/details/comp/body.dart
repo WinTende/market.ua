@@ -33,7 +33,16 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   late Animation<double> _animation;
   double minPrice = 0;
   late FirebaseFirestore firestore;
+  double getMinPrice() {
+    final filteredPrices = pricesShop.where((price) => price != "0").toList();
 
+    if (filteredPrices.isEmpty) {
+      return 0;
+    }
+
+    final sortedPrices = filteredPrices.map((price) => double.parse(price)).toList()..sort();
+    return sortedPrices.first;
+  }
   @override
   void initState() {
     super.initState();
@@ -151,10 +160,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     List<double> sortedPrices = sortPrices(pricesShop);
-    minPrice = sortPrices(pricesShop).first;
     Size size = MediaQuery.of(context).size;
     String description = widget.product.description;
-
+    double minPrice = getMinPrice();
     // Определяем первые 10 слов описания
     String shortDescription = '';
     List<String> words = description.split(' ');
