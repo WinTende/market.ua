@@ -30,9 +30,9 @@ android {
     signingConfigs {
         release {
             keyAlias 'my-key-alias'
-            keyPassword 'my-key-password'
-            storeFile file('path/to/your/keystore.jks')
-            storePassword 'your-store-password'
+            keyPassword '16062006Lool'
+            storeFile file('C:/Users/WinTed/Desktop/my-release-key.jks')
+            storePassword '16062006Lool'
         }
     }
     compileSdkVersion flutter.compileSdkVersion
@@ -53,7 +53,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.firebase"
+        applicationId "com.winted.market"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 21

@@ -1,4 +1,4 @@
-package com.example.firebase
+package com.winted.market
 
 import io.flutter.embedding.android.FlutterActivity
 

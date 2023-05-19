@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:84921786284:android:d7ba3c14ec63aeafe66409",
         "android_client_info": {
-          "package_name": "com.example.firebase"
+          "package_name": "com.winted.market"
         }
       },
       "oauth_client": [
