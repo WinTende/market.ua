@@ -1,23 +1,21 @@
-import 'package:firebase/screen/comp/body.dart';
 import 'package:firebase/screen/details/comp/sales_page.dart';
-import 'package:firebase/screen/details/comp/toolbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'details/comp/map_page.dart';
+import '../../home_page.dart';
+import 'map_page.dart';
 
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class Toolbar extends StatefulWidget {
+  const Toolbar({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<Toolbar> createState() => _ToolbarState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
-  int selectedIndex = 0;
+class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
+  int selectedIndex = 1;
   bool isToolbarVisible = false;
   late AnimationController _animationController;
   late Animation<double> _slideAnimation;
@@ -52,9 +50,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         selectedIndex = index;
         isToolbarVisible = false;
 
-        if (selectedIndex == 1) {
+        if (selectedIndex == 0) {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => Toolbar()),
+            MaterialPageRoute(builder: (context) => HomePage()),
           );
         }
       });
@@ -135,7 +133,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     return Scaffold(
       body: Stack(
         children: [
-          Body(),
+          SalesPage(),
           AnimatedBuilder(
             animation: _slideAnimation,
             builder: (context, child) {

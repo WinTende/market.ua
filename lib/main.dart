@@ -108,7 +108,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return SplashScreen();
           } else {
-            return HomePage();
+            return MainPage();
           }
         },
       ),

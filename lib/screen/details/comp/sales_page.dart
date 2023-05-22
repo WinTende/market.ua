@@ -76,37 +76,10 @@ class _SalesPageState extends State<SalesPage>
     return 0;
   }
 
-  void onTap(int index) {
-    setState(() {
-      selectIndex = index;
-      if (selectIndex == 0) {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      } else if (index == 2) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => MapPage(),
-          ),
-        );
-      } else {
-        selectIndex = index;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Головна'),
-            BottomNavigationBarItem(icon: Icon(Icons.percent_rounded), label: 'Знижки'),
-            BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Мапа'),
-          ],
-          onTap: onTap,
-          currentIndex: selectIndex,
-        ),
         appBar: AppBar(
           title: Text(productName.isNotEmpty ? productName : 'Sales Page'),
         ),
