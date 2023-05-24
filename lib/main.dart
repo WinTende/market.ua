@@ -92,7 +92,7 @@ class SplashScreen extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  static final String title = 'My App';
+  static final String title = 'Market.ua';
 
   final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -129,7 +129,7 @@ class MainPage extends StatelessWidget {
         } else if (snapshot.hasError){
           return Center(child: Text('Somthing went wrong'));
         } else if(snapshot.hasData){
-          return VarifyEmail();
+          return VerifyEmail();
         }
         else{
           return RegPage();

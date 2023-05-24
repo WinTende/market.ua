@@ -40,6 +40,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flare_flutter: ^3.0.2
   flutter_native_splash: ^2.2.19
+  google_sign_in: ^6.1.1
 
 dev_dependencies:
   flutter_test:
