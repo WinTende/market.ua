@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../home_page.dart';
+import '../../login.dart';
 import 'map_page.dart';
 
 class Toolbar extends StatefulWidget {
@@ -19,7 +21,17 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
   bool isToolbarVisible = false;
   late AnimationController _animationController;
   late Animation<double> _slideAnimation;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+    await _googleSignIn.signOut(); // Выход из аккаунта Google
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => AutherPage(onClickSingUp: () {  },)),
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -121,7 +133,7 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
               IconButtonWithText(
                 icon: Icon(Icons.logout, color: Colors.white),
                 text: 'Выйти',
-                onPressed: () => FirebaseAuth.instance.signOut(),
+                onPressed: signOut,
               ),
               SizedBox(height: 10),
             ],

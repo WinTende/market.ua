@@ -34,7 +34,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
       curve: Curves.easeOut,
     ));
     _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-1375476684576254/7638771463',
+      adUnitId: 'ca-app-pub-6636044014701516/4327668686',
       size: AdSize.banner,
       request: AdRequest(),
       listener: BannerAdListener(

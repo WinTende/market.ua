@@ -59,7 +59,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     firestore = FirebaseFirestore.instance;
 
   }
+  Future<void> userSetUp() async {
 
+  }
   Future<void> fetchPrices() async {
     setState(() {
       isLoading = true;

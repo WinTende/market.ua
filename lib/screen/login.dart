@@ -189,19 +189,7 @@ class _AutherPageState extends State<AutherPage>
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
-                ElevatedButton.icon(
-                  onPressed: signInWithGoogle,
-                  icon: Icon(Icons.login, color: Colors.white),
-                  label: Text('Sign in with Google',
-                      style: TextStyle(color: Colors.white)),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.redAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
+
                 SizedBox(height: 20),
                 SlideTransition(
                   position: _slideAnimation,
@@ -240,7 +228,39 @@ class _AutherPageState extends State<AutherPage>
                     ),
                   ),
                 ),
-                SizedBox(height: 300),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(width: 10),
+                    AnimatedBuilder(
+                      animation: _animationController,
+                      builder: (BuildContext context, Widget? child) {
+                        return Transform.translate(
+                          offset: _slideAnimation.value,
+                          child: Opacity(
+                            opacity: _opacityAnimation.value,
+                            child: ElevatedButton.icon(
+                              onPressed: signInWithGoogle,
+                              label: const Text('Sign in with Google'),
+                              icon: const Icon(Icons.login),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.redAccent,
+                                textStyle: const TextStyle(fontSize: 18),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                minimumSize:
+                                Size(buttonWidth, 40), // Устанавливаем ширину кнопки
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
+                SizedBox(height: 260),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -294,13 +314,6 @@ class _AutherPageState extends State<AutherPage>
   }
 
   Future<void> signIn() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -313,13 +326,6 @@ class _AutherPageState extends State<AutherPage>
   }
 
   Future<void> signInWithGoogle() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =

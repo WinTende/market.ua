@@ -41,6 +41,8 @@ dependencies:
   flare_flutter: ^3.0.2
   flutter_native_splash: ^2.2.19
   google_sign_in: ^6.1.1
+  shared_preferences: ^2.0.12
+  fluttertoast: ^8.0.7
 
 dev_dependencies:
   flutter_test:
