@@ -27,7 +27,7 @@
                 android:value="2" />
             <meta-data
                 android:name="com.google.android.gms.ads.APPLICATION_ID"
-                android:value="ca-app-pub-6636044014701516~3743029538"/>
+                android:value="ca-app-pub-1375476684576254~5666433995"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -45,6 +45,9 @@
        <meta-data
            android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyAn39dBSNXB8hcHBocoSIaU76eVMPkOc50" />
+       <meta-data
+           android:name="com.google.android.gms.ads.AD_MANAGER_FACTORY"
+           android:value="adFactoryExample:com.google.android.gms.ads.mediation.customevent.CustomEventNative" />
 
     </application>
 </manifest>

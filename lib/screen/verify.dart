@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,18 @@ class _VerifyEmailState extends State<VerifyEmail> {
     });
     if (isEmailVerified) {
       timer?.cancel();
+
+      // Добавить аккаунт в базу данных Firestore
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+      final userData = {
+        'userId': userId,
+        // Добавьте другие данные аккаунта, если необходимо
+      };
+
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(userId)
+          .set(userData);
     }
   }
 

@@ -92,22 +92,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               SizedBox(height: 75),
               SizedBox(height: 10),
               IconButtonWithText(
-                icon: Icon(Icons.favorite, color: Colors.white),
-                text: 'Избранное',
-                onPressed: () {
-                  // Действия для просмотра избранного
-                },
-              ),
-              SizedBox(height: 10),
-              IconButtonWithText(
-                icon: Icon(Icons.visibility, color: Colors.white),
-                text: 'Отслеживаемое',
-                onPressed: () {
-                  // Действия для просмотра отслеживаемого
-                },
-              ),
-              SizedBox(height: 10),
-              IconButtonWithText(
                 icon: Icon(Icons.person, color: Colors.white),
                 text: 'Профиль',
                 onPressed: () {

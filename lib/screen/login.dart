@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -260,7 +261,7 @@ class _AutherPageState extends State<AutherPage>
                     )
                   ],
                 ),
-                SizedBox(height: 260),
+                SizedBox(height: 250),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -334,10 +335,28 @@ class _AutherPageState extends State<AutherPage>
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+      final UserCredential userCredential =
       await _auth.signInWithCredential(credential);
+
+      // Добавляем данные аккаунта в базу данных Firestore
+      final user = userCredential.user;
+      if (user != null) {
+        final userId = FirebaseAuth.instance.currentUser!.uid;
+        final userData = {
+          'userId': userId,
+          // Добавьте другие данные аккаунта, если необходимо
+        };
+
+        await FirebaseFirestore.instance
+            .collection('user')
+            .doc(userId)
+            .set(userData);
+      }
     } catch (e) {
       print(e);
     }
+
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
+
 }
