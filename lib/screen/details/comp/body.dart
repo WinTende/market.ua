@@ -175,7 +175,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   String getPriceSelector(String shopName) {
     switch (shopName) {
       case 'ATB':
-        return '.price';
+        return '.product-price__top';
       case 'Novus':
         return '.product-card__price-current';
       case 'MegaMarket':
@@ -390,12 +390,13 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                     ),
                                     TyperAnimatedTextKit(
                                       isRepeatingAnimation: false,
-                                      text: [widget.product.title],
+                                      text: [widget.product.title.replaceAll(r'\n', '\n')],
                                       textStyle: TextStyle(
                                           fontSize: 24.0,
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                      speed: Duration(milliseconds: 300),
+                                          fontWeight: FontWeight.bold
+                                      ),
+                                      speed: Duration(milliseconds: 200),
                                       pause: Duration(milliseconds: 1000),
                                       displayFullTextOnTap: true,
                                       repeatForever: false,
@@ -427,9 +428,15 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                         Expanded(
                                             child: FadeTransition(
                                               opacity: _animation,
-                                              child: Image.asset(
-                                                widget.product.image,
-                                                fit: BoxFit.fill,
+                                              child: Container(
+                                                width: 300, // Укажите требуемую ширину изображения
+                                                height: 300, // Укажите требуемую высоту изображения
+                                                child: ClipRRect(
+                                                  child: Image.network(
+                                                    widget.product.image,
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
                                               ),
                                             )),
                                       ],

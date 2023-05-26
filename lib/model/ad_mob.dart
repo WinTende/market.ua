@@ -1,4 +1,3 @@
-import 'dart:html';
 
 class AdMobService {
   static String? get bannerAdUnitId{

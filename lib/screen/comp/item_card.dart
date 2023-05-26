@@ -9,7 +9,7 @@ class ItemCard extends StatefulWidget {
   const ItemCard({
     Key? key,
     required this.product,
-    required this.press
+    required this.press,
   }) : super(key: key);
 
   @override
@@ -49,7 +49,7 @@ class _ItemCardState extends State<ItemCard> with SingleTickerProviderStateMixin
       animation: _opacityAnimation,
       builder: (context, child) {
         final animationValue = _opacityAnimation.value;
-        final cardHeight = 180.0;
+        final cardHeight = 200.0; // Увеличиваем высоту контейнера
         final cardWidth = 160.0;
         final cardOffsetY = (1 - animationValue) * cardHeight;
 
@@ -71,7 +71,7 @@ class _ItemCardState extends State<ItemCard> with SingleTickerProviderStateMixin
             Expanded(
               child: Container(
                 padding: EdgeInsets.all(20),
-                height: 180,
+                height: 200, // Изменяем высоту контейнера
                 width: 160,
                 decoration: BoxDecoration(
                   color: widget.product.color,
@@ -85,13 +85,16 @@ class _ItemCardState extends State<ItemCard> with SingleTickerProviderStateMixin
                     ),
                   ],
                 ),
-                child: Image.asset(widget.product.image),
+                child: Image.network(
+                  widget.product.image,
+                  fit: BoxFit.contain, // Добавляем свойство fit для изображения
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: Text(
-                widget.product.title,
+                widget.product.title.replaceAll(r'\n', '\n'), // Замена символа "\n" на абзац
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w500,

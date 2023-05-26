@@ -184,7 +184,7 @@ class _SalesPageState extends State<SalesPage>
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Image.asset(
+                                Image.network(
                                   imageUrl,
                                   fit: BoxFit.fill,
                                   height: 150,

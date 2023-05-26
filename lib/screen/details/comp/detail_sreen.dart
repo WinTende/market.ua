@@ -3,10 +3,10 @@ import 'package:firebase/screen/details/comp/body.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DetailSreen extends StatelessWidget {
+class DetailScreen extends StatelessWidget {
   final Product product;
 
-  const DetailSreen({Key? key, required this.product}) : super(key: key);
+  const DetailScreen({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class DetailSreen extends StatelessWidget {
           ),
           onPressed: () {
             Navigator.pop(context);
-          }
+          },
         ),
       ),
       body: Body(product: product),

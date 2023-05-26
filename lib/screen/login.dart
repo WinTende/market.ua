@@ -261,7 +261,7 @@ class _AutherPageState extends State<AutherPage>
                     )
                   ],
                 ),
-                SizedBox(height: 250),
+                SizedBox(height: 100),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

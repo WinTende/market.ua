@@ -88,19 +88,23 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  List<Product> getFilteredProducts() {
+  Future<List<Product>> getFilteredProducts() async {
+    List<Product> products = await Product.getProducts(); // Получение списка продуктов из базы данных
+
     if (showFavoritesOnly) {
-      return Product.searchByTitle(_searchQuery)
+      return Product.searchByTitle(products, _searchQuery)
           .where((product) =>
       userFavorites.contains(product.id) &&
           (_selectedIndex == 0 || product.category == _selectedIndex - 1))
           .toList();
     } else {
-      return Product.searchByTitle(_searchQuery)
+      return Product.searchByTitle(products, _searchQuery)
           .where((product) => _selectedIndex == 0 || product.category == _selectedIndex - 1)
           .toList();
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +125,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   });
                 },
                 decoration: InputDecoration(
-                  hintText: 'Пошук...',
+                  hintText: 'Поиск...',
                   hintStyle: TextStyle(
                     color: Colors.black54,
                   ),
@@ -134,11 +138,10 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   fillColor: Colors.white,
                 ),
               ),
-
             ),
             Container(
               height: 50,
-              width: 750,// Задайте желаемую высоту баннера
+              width: 750, // Задайте желаемую высоту баннера
               child: AdWidget(ad: _bannerAd!),
             ),
             Row(
@@ -148,7 +151,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   child: Padding(
                     padding: EdgeInsets.all(20),
                     child: Text(
-                      "Категорії",
+                      "Категории",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -173,61 +176,99 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            FadeTransition(
-              opacity: _animation,
-              child: Category(
-                categories: [
-                  'Усі товари',
-                  'Напої',
-                  'Фрукти',
-                  'Закуски',
-                  'Соуси',
-                  'Морозиво'
-                ],
-                selectedIndex: _selectedIndex,
-                onTap: (index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
+            FutureBuilder<List<Product>>(
+              future: getFilteredProducts(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Ошибка при загрузке данных'),
+                  );
+                } else if (!snapshot.hasData) {
+                  return Center(
+                    child: Text('Нет данных'),
+                  );
+                } else {
+                  final filteredProducts = snapshot.data!;
+                  return FadeTransition(
+                    opacity: _animation,
+                    child: Category(
+                      categories: [
+                        'Все товары',
+                        'Напитки',
+                        'Фрукты',
+                        'Закуски',
+                        'Соусы',
+                        'Мороженое',
+                      ],
+                      selectedIndex: _selectedIndex,
+                      onTap: (index) {
+                        setState(() {
+                          _selectedIndex = index;
+                        });
+                      },
+                    ),
+                  );
+                }
+              },
+            ),
+            Expanded(
+              child: FutureBuilder<List<Product>>(
+                future: getFilteredProducts(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Ошибка при загрузке данных'),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return Center(
+                      child: Text('Нет данных'),
+                    );
+                  } else {
+                    final filteredProducts = snapshot.data!;
+                    return FadeTransition(
+                      opacity: _animation,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: GridView.builder(
+                          itemCount: filteredProducts.length,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.75,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 20,
+                          ),
+                          itemBuilder: (context, index) {
+                            return ItemCard(
+                              product: filteredProducts[index],
+                              press: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                      product: filteredProducts[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  }
                 },
               ),
             ),
-            Expanded(
-              child: FadeTransition(
-                opacity: _animation,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: GridView.builder(
-                    itemCount: getFilteredProducts().length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.75,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                    ),
-                    itemBuilder: (context, index) {
-                      final filteredProducts = getFilteredProducts();
-                      return ItemCard(
-                        product: filteredProducts[index],
-                        press: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailSreen(
-                                product: filteredProducts[index],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
           ],
-        )
+        ),
       ],
     );
-  }
-}
+  }}
