@@ -21,13 +21,15 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   bool isLoading = true;
-  List<String> shop = ['ATБ', 'Novus', 'MegaMarket', 'Fozzy'];
-  List<String> pricesShop = ["0", "0", "0", "0"];
+  List<String> shop = ['ATБ', 'Novus', 'MegaMarket', 'Fozzy', 'Fora', 'Silpo'];
+  List<String> pricesShop = ["0", "0", "0", "0", "0", "0"];
   List<Image> images = [
     Image.asset('assets/atb.webp'),
     Image.asset('assets/novus.webp'),
     Image.asset('assets/mega.webp'),
-    Image.asset('assets/fozzy.webp')
+    Image.asset('assets/fozzy.webp'),
+    Image.asset('assets/fora.webp'),
+    Image.asset('assets/silpo.webp')
   ];
 
   late AnimationController _controller;
@@ -92,8 +94,43 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     firestore = FirebaseFirestore.instance;
 
   }
-  Future<void> userSetUp() async {
+  Future<void> fetchForaPrice(String productId, int index) async {
+    try {
+      final productDoc = await FirebaseFirestore.instance.collection('products_base').doc(productId).get();
+      final foraPrice = productDoc['Fora']; // Получите цену магазина "Fora" из базы данных
 
+      setState(() {
+        pricesShop[index] = foraPrice.toString();
+        print('Fora - $foraPrice');
+      });
+
+      // Сохраните цену "Fora" в коллекцию "products" в базе данных
+      final productRef = FirebaseFirestore.instance.collection('products').doc(widget.product.title);
+      await productRef.set({
+        'Fora': foraPrice,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+  Future<void> fetchSilpoPrice(String productId, int index) async {
+    try {
+      final productDoc = await FirebaseFirestore.instance.collection('products_base').doc(productId).get();
+      final silpoPrice = productDoc['Silpo']; // Получите цену магазина "Silpo" из базы данных
+
+      setState(() {
+        pricesShop[index] = silpoPrice.toString();
+        print('Silpo - $silpoPrice');
+      });
+
+      // Сохраните цену "Silpo" в коллекцию "products" в базе данных
+      final productRef = FirebaseFirestore.instance.collection('products').doc(widget.product.title);
+      await productRef.set({
+        'Silpo': silpoPrice,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      print(e.toString());
+    }
   }
   Future<void> fetchPrices() async {
     setState(() {
@@ -104,7 +141,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
       fetchPrice('Novus', widget.product.uriNovus, 1),
       fetchPrice('Fozzy', widget.product.uriFozzy, 3),
       fetchPrice('MegaMarket', widget.product.uriMega, 2),
-    ]);
+      fetchForaPrice(widget.product.id.toString(), 4),
+      fetchSilpoPrice(widget.product.id.toString(), 5), // Добавьте вызов метода для получения цены из базы данных для магазина "Silpo"
+    ] as Iterable<Future>);
     setState(() {
       isLoading = false;
     });
@@ -330,7 +369,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                                             child: InkWell(
                                               onTap: () {
-                                                String url = "http://example.com";
+                                                String url = "https://shop.fora.ua/prod";
                                                 if (index == 0) {
                                                   url = widget.product.uriATB;
                                                 } else if (index == 1) {

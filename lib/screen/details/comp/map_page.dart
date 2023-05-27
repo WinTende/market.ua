@@ -25,7 +25,7 @@ class _MapPageState extends State<MapPage> {
   int selectedShop = -1;
   Marker? selectedMarker;
 
-  final List<String> stores = ['ATБ', 'MegaMarket', 'Novus', 'Fozzy'];
+  final List<String> stores = ['ATБ', 'MegaMarket', 'Novus', 'Fozzy', 'Fora' , 'Silpo'];
   final redCircleMarker = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
   final placesApiClient = GoogleMapsPlaces(apiKey: 'AIzaSyAn39dBSNXB8hcHBocoSIaU76eVMPkOc50');
 
@@ -73,6 +73,8 @@ class _MapPageState extends State<MapPage> {
         stores[1] = 'MegaMarket $currentCity';
         stores[2] = 'Novus $currentCity';
         stores[3] = 'Fozzy $currentCity';
+        stores[4] = 'Fora $currentCity';
+        stores[5] = 'Silpo $currentCity';
       });
       _addMarkers();
       mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(

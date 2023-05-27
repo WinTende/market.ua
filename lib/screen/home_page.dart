@@ -91,29 +91,59 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             children: [
               SizedBox(height: 75),
               SizedBox(height: 10),
-              IconButtonWithText(
-                icon: Icon(Icons.person, color: Colors.white),
-                text: 'Профиль',
-                onPressed: () {
-                  // Действия для просмотра профиля
-                },
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+                child: IconButtonWithText(
+                  icon: Icon(Icons.person, color: Colors.white),
+                  text: 'Профиль',
+                  onPressed: () {
+                    // Действия для просмотра профиля
+                  },
+                ),
               ),
               SizedBox(height: 10),
-              IconButtonWithText(
-                icon: Icon(Icons.map, color: Colors.white),
-                text: 'Мапа',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MapPage()),
-                  );
-                },
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+                child: IconButtonWithText(
+                  icon: Icon(Icons.map, color: Colors.white),
+                  text: 'Мапа',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MapPage()),
+                    );
+                  },
+                ),
               ),
               Spacer(),
-              IconButtonWithText(
-                icon: Icon(Icons.logout, color: Colors.white),
-                text: 'Выйти',
-                onPressed: signOut, // Вызов метода signOut()
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+                child: IconButtonWithText(
+                  icon: Icon(Icons.logout, color: Colors.white),
+                  text: 'Выйти',
+                  onPressed: signOut, // Вызов метода signOut()
+                ),
               ),
               SizedBox(height: 10),
             ],
@@ -136,15 +166,27 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       ),
       bottomNavigationBar: Stack(
         children: [
-          BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Главная'),
-              BottomNavigationBarItem(icon: Icon(Icons.percent_rounded), label: 'Скидки'),
-            ],
-            onTap: onTap,
-            currentIndex: selectedIndex,
-            selectedItemColor: Colors.blue, // Цвет активного элемента
-            unselectedItemColor: Colors.grey,
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 5,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Главная'),
+                BottomNavigationBarItem(icon: Icon(Icons.percent_rounded), label: 'Скидки'),
+              ],
+              onTap: onTap,
+              currentIndex: selectedIndex,
+              selectedItemColor: Colors.blue, // Цвет активного элемента
+              unselectedItemColor: Colors.grey,
+            ),
           ),
           Positioned(
             bottom: 0,
@@ -189,7 +231,8 @@ class IconButtonWithText extends StatelessWidget {
             text,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 12,
+              fontSize: 14, // Измените размер шрифта по вашему усмотрению
+              fontWeight: FontWeight.bold, // Добавьте стиль шрифта по вашему усмотрению
             ),
           ),
         ],

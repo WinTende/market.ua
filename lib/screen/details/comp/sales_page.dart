@@ -164,6 +164,8 @@ class _SalesPageState extends State<SalesPage>
                         final fozzyPrice = product['Fozzy'] ?? 'N/A';
                         final megaMarketPrice = product['MegaMarket'] ?? 'N/A';
                         final novusPrice = product['Novus'] ?? 'N/A';
+                        final silpoPrice = product['Silpo'] ?? 'N/A';
+                        final foraPrice = product['Fora'] ?? 'N/A';
                         final discountPercentage = calculateDiscountPercentage(
                             novusPrice, megaMarketPrice, atbPrice, fozzyPrice);
                         final imageUrl =
@@ -217,6 +219,16 @@ class _SalesPageState extends State<SalesPage>
                                       ),
                                       Text(
                                         'Novus: $novusPrice UAH',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'Silpo: $silpoPrice UAH',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'Fora: $foraPrice UAH',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
