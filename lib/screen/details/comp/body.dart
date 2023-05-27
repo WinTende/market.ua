@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../model/ad_mob.dart';
 import '../../../model/products.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -40,6 +42,15 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late User _currentUser;
   late CollectionReference _favoriteCollection;
+  late BannerAd _bannerAd;
+  bool _isBannerAdLoaded = false;
+
+
+  @override
+  void dispose() {
+    _bannerAd.dispose();
+    super.dispose();
+  }
 
   void toggleFavorite() {
     setState(() {
@@ -92,7 +103,22 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     );
     _controller.forward();
     firestore = FirebaseFirestore.instance;
-
+    _bannerAd = BannerAd(
+      adUnitId: AdMobService.bannerAdUnitId!,
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) {
+          setState(() {
+            _isBannerAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          ad.dispose();
+        },
+      ),
+    );
+    _bannerAd.load();
   }
   Future<void> fetchForaPrice(String productId, int index) async {
     try {
@@ -289,6 +315,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                   // Добавьте дополнительные свойства для позиционирования и размера изображения по вашему усмотрению.
                 ),
               ),
+
               StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
                     return Column(
@@ -307,17 +334,21 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                     topRight: Radius.circular(24),
                                   ),
                                 ),
+
                                 child: Column(
                                   children: <Widget>[
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 20, horizontal: 20),
+
                                       child: GestureDetector(
                                         onTap: () {
                                           setState(() {
                                             isFullDescription = !isFullDescription;
                                           });
                                         },
+
+
                                         child: Text(
                                           isFullDescription
                                               ? widget.product.description
@@ -329,7 +360,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                     Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
+                                          padding: const EdgeInsets.only(left: 5),
                                           child: IconButton(
                                             icon: Icon(
                                               _isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -356,6 +387,13 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                         )
                                       ],
                                     ),
+                                    if (_isBannerAdLoaded)
+                                      Container(
+                                        alignment: Alignment.center,
+                                        child: AdWidget(ad: _bannerAd),
+                                        width: _bannerAd.size.width.toDouble(),
+                                        height: _bannerAd.size.height.toDouble(),
+                                      ),
                                     SizedBox(height: 20),
                                     Expanded(
                                       child: ListView.builder(

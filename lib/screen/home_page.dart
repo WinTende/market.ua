@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:firebase/screen/comp/body.dart';
 import 'package:firebase/screen/details/comp/sales_page.dart';
 import 'package:firebase/screen/details/comp/toolbar.dart';
@@ -48,6 +49,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+    final gradient = LinearGradient(
+      colors: [Colors.white, Colors.blue],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+    );
+
     void onTap(int index) {
       setState(() {
         selectedIndex = index;
@@ -84,7 +91,13 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         left: _slideAnimation.value,
         width: 75,
         child: Container(
-          color: Colors.blue[200], // Цвет тулбара
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue[200]!, Colors.blue[400]!],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,8 +114,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   ),
                 ),
                 child: IconButtonWithText(
-                  icon: Icon(Icons.person, color: Colors.white),
-                  text: 'Профиль',
+                  icon: Icon(Icons.credit_card_rounded, color: Colors.white),
+                  text: 'Картки',
                   onPressed: () {
                     // Действия для просмотра профиля
                   },
@@ -153,16 +166,19 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     }
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Body(),
-          AnimatedBuilder(
-            animation: _slideAnimation,
-            builder: (context, child) {
-              return buildToolbar();
-            },
-          ),
-        ],
+      body: Container(
+        decoration: BoxDecoration(gradient: gradient),
+        child: Stack(
+          children: [
+            Body(),
+            AnimatedBuilder(
+              animation: _slideAnimation,
+              builder: (context, child) {
+                return buildToolbar();
+              },
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: Stack(
         children: [

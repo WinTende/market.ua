@@ -5,8 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../../model/ad_mob.dart';
 import '../../home_page.dart';
 import '../../login.dart';
 import 'map_page.dart';
@@ -25,6 +27,9 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _slideAnimation;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  late BannerAd _bannerAd;
+  bool _isBannerAdLoaded = false;
+
   void toggleToolbarVisibility() {
     setState(() {
       isToolbarVisible = !isToolbarVisible;
@@ -57,10 +62,27 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
         curve: Curves.easeInOut,
       ),
     );
+    _bannerAd = BannerAd(
+      adUnitId: AdMobService.bannerAdUnitId!,
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) {
+          setState(() {
+            _isBannerAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          ad.dispose();
+        },
+      ),
+    );
+    _bannerAd.load();
   }
 
   @override
   void dispose() {
+    _bannerAd.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -103,16 +125,21 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
                       color: Colors.white,
                       width: 1.0,
                     ),
+
                   ),
+
                 ),
+
                 child: IconButtonWithText(
-                  icon: Icon(Icons.person, color: Colors.white),
-                  text: 'Профиль',
+                  icon: Icon(Icons.credit_card_rounded, color: Colors.white),
+                  text: 'Картки',
                   onPressed: () {
+
                     // Действия для просмотра профиля
                   },
                 ),
               ),
+
               SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(
@@ -167,21 +194,25 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
               return buildToolbar();
             },
           ),
+
         ],
       ),
       bottomNavigationBar: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.cyanAccent,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),
                   blurRadius: 5,
                   spreadRadius: 2,
                 ),
+
               ],
+
             ),
+
             child: BottomNavigationBar(
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Главная'),
@@ -193,6 +224,7 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
               unselectedItemColor: Colors.grey,
             ),
           ),
+
           Positioned(
             bottom: 0,
             left: MediaQuery.of(context).size.width / 2 - 20, // Размещаем кнопку в середине
@@ -231,6 +263,7 @@ class IconButtonWithText extends StatelessWidget {
             icon: icon,
             onPressed: onPressed,
           ),
+
           SizedBox(height: 4),
           Text(
             text,
