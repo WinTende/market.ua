@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'cart.dart';
 import 'details/comp/map_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -117,7 +118,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   icon: Icon(Icons.credit_card_rounded, color: Colors.white),
                   text: 'Картки',
                   onPressed: () {
-                    // Действия для просмотра профиля
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyHomePage (title: 'Мої карти',)),
+                    );
                   },
                 ),
               ),
