@@ -9,6 +9,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../model/ad_mob.dart';
+import '../../cart.dart';
 import '../../home_page.dart';
 import '../../login.dart';
 import 'map_page.dart';
@@ -134,7 +135,10 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
                   icon: Icon(Icons.credit_card_rounded, color: Colors.white),
                   text: 'Картки',
                   onPressed: () {
-
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyHomePage (title: 'Мої карти',)),
+                    );
                     // Действия для просмотра профиля
                   },
                 ),
@@ -173,7 +177,7 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
                 ),
                 child: IconButtonWithText(
                   icon: Icon(Icons.logout, color: Colors.white),
-                  text: 'Выйти',
+                  text: 'Вийти',
                   onPressed: signOut, // Вызов метода signOut()
                 ),
               ),
@@ -215,8 +219,8 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
 
             child: BottomNavigationBar(
               items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Главная'),
-                BottomNavigationBarItem(icon: Icon(Icons.percent_rounded), label: 'Скидки'),
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Головна'),
+                BottomNavigationBarItem(icon: Icon(Icons.percent_rounded), label: 'Знижки'),
               ],
               onTap: onTap,
               currentIndex: selectedIndex,

@@ -251,7 +251,7 @@ class _SingUpState extends State<SingUp> with SingleTickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 340),
+                      const SizedBox(height: 300),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

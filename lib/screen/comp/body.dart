@@ -125,7 +125,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   });
                 },
                 decoration: InputDecoration(
-                  hintText: 'Поиск...',
+                  hintText: 'Пошук...',
                   hintStyle: TextStyle(
                     color: Colors.black54,
                   ),
@@ -151,7 +151,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   child: Padding(
                     padding: EdgeInsets.all(20),
                     child: Text(
-                      "Категории",
+                      "Категорії",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -197,12 +197,12 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                     opacity: _animation,
                     child: Category(
                       categories: [
-                        'Все товары',
-                        'Напитки',
-                        'Фрукты',
+                        'Всі товари',
+                        'Напої',
+                        'Фрукти',
                         'Закуски',
-                        'Соусы',
-                        'Мороженое',
+                        'Соуси',
+                        'Морозиво',
                       ],
                       selectedIndex: _selectedIndex,
                       onTap: (index) {

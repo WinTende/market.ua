@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 ),
                 child: IconButtonWithText(
                   icon: Icon(Icons.logout, color: Colors.white),
-                  text: 'Выйти',
+                  text: 'Вийти',
                   onPressed: signOut, // Вызов метода signOut()
                 ),
               ),
@@ -199,8 +199,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             ),
             child: BottomNavigationBar(
               items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Главная'),
-                BottomNavigationBarItem(icon: Icon(Icons.percent_rounded), label: 'Скидки'),
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Головна'),
+                BottomNavigationBarItem(icon: Icon(Icons.percent_rounded), label: 'Знижки'),
               ],
               onTap: onTap,
               currentIndex: selectedIndex,
