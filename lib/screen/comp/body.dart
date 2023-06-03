@@ -203,6 +203,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                         'Закуски',
                         'Соуси',
                         'Морозиво',
+                        'Цигарки',
                       ],
                       selectedIndex: _selectedIndex,
                       onTap: (index) {

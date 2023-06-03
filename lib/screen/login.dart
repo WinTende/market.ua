@@ -241,20 +241,6 @@ class _AutherPageState extends State<AutherPage>
                           offset: _slideAnimation.value,
                           child: Opacity(
                             opacity: _opacityAnimation.value,
-                            child: ElevatedButton.icon(
-                              onPressed: signInWithGoogle,
-                              label: const Text('Sign in with Google'),
-                              icon: const Icon(Icons.login),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.redAccent,
-                                textStyle: const TextStyle(fontSize: 18),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                minimumSize:
-                                Size(buttonWidth, 40), // Устанавливаем ширину кнопки
-                              ),
-                            ),
                           ),
                         );
                       },
@@ -325,38 +311,4 @@ class _AutherPageState extends State<AutherPage>
     }
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
-
-  Future<void> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth =
-      await googleUser!.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      final UserCredential userCredential =
-      await _auth.signInWithCredential(credential);
-
-      // Добавляем данные аккаунта в базу данных Firestore
-      final user = userCredential.user;
-      if (user != null) {
-        final userId = FirebaseAuth.instance.currentUser!.uid;
-        final userData = {
-          'userId': userId,
-          // Добавьте другие данные аккаунта, если необходимо
-        };
-
-        await FirebaseFirestore.instance
-            .collection('user')
-            .doc(userId)
-            .set(userData);
-      }
-    } catch (e) {
-      print(e);
-    }
-
-    Navigator.of(context).popUntil((route) => route.isFirst);
-  }
-
 }

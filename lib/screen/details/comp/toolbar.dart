@@ -98,7 +98,7 @@ class _ToolbarState extends State<Toolbar> with SingleTickerProviderStateMixin {
         isToolbarVisible = false;
 
         if (selectedIndex == 0) {
-          Navigator.of(context).push(
+          Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => HomePage()),
           );
         }

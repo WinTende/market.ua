@@ -27,6 +27,7 @@ class _SalesPageState extends State<SalesPage>
     _animation =
         CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
     _animationController.forward();
+    productName = 'Sales Page';
   }
 
   @override
@@ -81,7 +82,18 @@ class _SalesPageState extends State<SalesPage>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(productName.isNotEmpty ? productName : 'Sales Page'),
+          centerTitle: true,
+          title: Text(
+            productName.isNotEmpty ? productName : 'Sales Page',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: Colors.blueAccent, // Цвет AppBar
+          elevation: 5,
+          shadowColor: Colors.black.withOpacity(0.1),
         ),
         body: Container(
             decoration: BoxDecoration(
@@ -110,28 +122,28 @@ class _SalesPageState extends State<SalesPage>
                   final products = snapshot.data ?? [];
                   final filteredProducts = products.where((product) {
                     final doublePrice1 =
-                        double.tryParse(product['ATB']?.toString() ?? '');
+                    double.tryParse(product['ATB']?.toString() ?? '');
                     final doublePrice2 =
-                        double.tryParse(product['Fozzy']?.toString() ?? '');
+                    double.tryParse(product['Fozzy']?.toString() ?? '');
                     final doublePrice3 = double.tryParse(
                         product['MegaMarket']?.toString() ?? '');
                     final doublePrice4 =
-                        double.tryParse(product['Novus']?.toString() ?? '');
+                    double.tryParse(product['Novus']?.toString() ?? '');
 
                     if (doublePrice1 != null &&
                         doublePrice2 != null &&
                         doublePrice3 != null &&
                         doublePrice4 != null) {
                       final highestPrice = [doublePrice1, doublePrice2].reduce(
-                          (value, element) =>
-                              value > element ? value : element);
+                              (value, element) =>
+                          value > element ? value : element);
                       final lowestPrice = [
                         doublePrice1,
                         doublePrice2,
                         doublePrice3,
                         doublePrice4
                       ].reduce((value, element) =>
-                          value < element ? value : element);
+                      value < element ? value : element);
 
                       final priceDifference = highestPrice - lowestPrice;
                       final priceDifferencePercentage =
@@ -200,7 +212,7 @@ class _SalesPageState extends State<SalesPage>
                                   ),
                                   subtitle: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'ATB: $atbPrice UAH',
